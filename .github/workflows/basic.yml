@@ -1,0 +1,19 @@
+name: End-to-end tests
+on: [push]
+jobs:
+  cypress-run:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      # Install NPM dependencies, cache them correctly
+      # and run all Cypress tests
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+      - name: Generate report
+        run: npm run cy:posttest
+      - name: Upload report
+        uses: actions/upload-artifact@v2
+        with:
+          name: cypress-cucumber-report
+          path: cypress/reports/

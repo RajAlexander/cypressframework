@@ -1,0 +1,5 @@
+{
+    "baseUrl": "https://qa-practical.qa.swimlane.io/login",
+    "experimentalSessionSupport": true,
+    "testFiles": "**/*.feature"
+}
