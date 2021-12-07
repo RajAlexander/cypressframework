@@ -1,8 +1,8 @@
-Feature: Login
+Feature: User Login API
 
-    Page where the users can login to their accounts.
+    API where the users can login to their accounts.
 
-    Background: Login Page
+    Background: user/login API
         Given A user enters to the login page.
 
     Scenario: Valid users.
@@ -10,9 +10,9 @@ Feature: Login
         When A user provides below user credentials.
             | Username   | Password     |
             | naresh.raj | 8JB2z4#Wu2l! |
-        Then "Complete Your Profile" should be displayed on the welcome page.
-        And Logout button should be clicked on the Welcome Page.
-
+        And /login request is intercepted.
+        Then Save token and /login response should give 200 status code.
+        
     Scenario: Invalid users.
 
         When A user provides below user credentials.
@@ -22,5 +22,5 @@ Feature: Login
             | naresh.raj | null         |
             | null       | 8JB2z4#Wu2l! |
             | null       | undefined    |
-        Then "Login failed" should be displayed on the login page.
-
+        And /login request is intercepted.
+        Then /login response should give 401 Unauthorized status code.

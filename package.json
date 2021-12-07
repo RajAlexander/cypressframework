@@ -21,8 +21,9 @@
   "author": "NareshRaj",
   "license": "ISC",
   "devDependencies": {
-    "cypress": "^8.4.0",
-    "cypress-cucumber-preprocessor": "^4.2.0",
+    "cypress": "^9.1.0",
+    "cypress-cucumber-preprocessor": "^4.3.0",
+    "cypress-cucumber-attach-screenshots-to-failed-steps": "^1.0.0",
     "multiple-cucumber-html-reporter": "^1.18.0"
   },
   "cypress-cucumber-preprocessor": {

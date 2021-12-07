@@ -1,17 +1,18 @@
-import { Given, When, Then, And } from "cypress-cucumber-preprocessor/steps"
-import coreFunctions from "../../../framework/Pages/CoreFunctions"
-import welcomePage from "../../../framework/Pages/WelcomePage"
+import { Given, When, Then } from "cypress-cucumber-preprocessor/steps";
+import loginPage from "../../../framework/Pages/LoginPage";
+import welcomePage from "../../../framework/Pages/WelcomePage";
+import coreFunctions from "../../../framework/Utils/CoreFunctions";
 
 Given("User is logged into the Swimlane application.", () => {
-    cy.loginViaAPISession(Cypress.env("username"), Cypress.env("password"))
-})
+  loginPage.loginViaUI(Cypress.env("username"), Cypress.env("password"));
+});
 
 When("Navigated to Welcome Page.", () => {
-    coreFunctions.open("/");
-})
+  coreFunctions.visit("/");
+});
 
 Then("WelcomePage title must contain {string}.", (pageTitle) => {
-    welcomePage.getTitle().then($el => {
-        expect($el.text().trim()).to.eq(pageTitle);
-    })
-})
+  welcomePage.getTitle().then(($el) => {
+    expect($el.text().trim()).to.eq(pageTitle);
+  });
+});
