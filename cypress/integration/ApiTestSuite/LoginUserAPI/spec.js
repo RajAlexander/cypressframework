@@ -19,7 +19,7 @@ After(() => {
 });
 
 Given("A user enters to the login page.", () => {
-  coreFunctions.visit("/");
+  coreFunctions.visit("/login");
 });
 
 When("A user provides below user credentials.", (dataTable) => {
