@@ -11,11 +11,11 @@ import loginPage from "../../../framework/Pages/LoginPage";
 import welcomePage from "../../../framework/Pages/WelcomePage";
 
 Before(() => {
-  coreFunctions.log("Login Tests - Started");
+  coreFunctions.log("Login API Tests - Started");
 });
 
 After(() => {
-  coreFunctions.log("Login Tests - Finished");
+  coreFunctions.log("Login API Tests - Finished");
 });
 
 Given("A user enters to the login page.", () => {
@@ -53,15 +53,22 @@ Then("{string} should be displayed on the welcome page.", (expectedString) => {
 });
 
 And("/login request is intercepted.", () => {
-  const routeMatcher = {
-    method: "POST",
-    path: "/api/user/login",
-  };
-  coreFunctions.intercept(routeMatcher, "login");
+  cy.readFile("./cypress/fixtures/userData.json").then(function (users) {
+    users.forEach((user) => {
+      loginPage.username(user.Username);
+      loginPage.password(user.Password);
+      const routeMatcher = {
+        method: "POST",
+        path: "/api/user/login",
+      };
+      coreFunctions.intercept(routeMatcher, "login");
+      loginPage.clickLoginButton();
+    });
+  });
 });
 
 Then(
-  "/login request should give {int} Unauthorized status code.",
+  "/login response should give {int} Unauthorized status code.",
   (_statusCode) => {
     coreFunctions.waitForObject("@login").then((resolve) => {
       expect(resolve.response.statusCode).to.eq(_statusCode);
@@ -69,11 +76,22 @@ Then(
   }
 );
 
-Then("/login request should give {int} status code.", (_statusCode) => {
-  coreFunctions.waitForObject("@login").then((resolve) => {
-    expect(resolve.response.statusCode).to.eq(_statusCode);
-  });
-});
+Then(
+  "Save token and /login response should give {int} status code.",
+  (_statusCode) => {
+    coreFunctions.waitForObject("@login").then((resolve) => {
+      expect(resolve.response.statusCode).to.eq(_statusCode);
+      window.localStorage.setItem(
+        "responseBody",
+        JSON.stringify(resolve.response.body)
+      );
+      cy.writeFile(
+        "./cypress/payload/login/response/responseBody.json",
+        JSON.stringify(resolve.response.body)
+      );
+    });
+  }
+);
 
 And("Logout button should be clicked on the Welcome Page.", () => {
   coreFunctions.getCurrentUrl("/welcome");
