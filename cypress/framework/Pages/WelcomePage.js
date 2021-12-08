@@ -6,6 +6,7 @@ class WelcomePage {
       return WelcomePage._instance;
     }
     WelcomePage._instance = this;
+
     this.pageTitleLocator = "head > title";
     this.userProfileLocator = ".ngx-dropdown-toggle";
     this.logoutLocator = "li > .profile-title > .logout-button";
@@ -28,11 +29,8 @@ class WelcomePage {
   clickHomeButton() {
     return coreFunctions.get(this.navigationMenuLocator);
   }
-
-  toDoLink() {
-    return cy.get(this.todoLocator);
-  }
 }
+
 /* Create an instance and export. */
 const welcomePage = new WelcomePage();
 export default welcomePage;

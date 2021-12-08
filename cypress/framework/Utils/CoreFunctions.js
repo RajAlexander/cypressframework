@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 class CoreFunctions {
-  /* Singleton Patter for single instance creation. */
+  /* Singleton Pattern for single instance creation. */
   constructor() {
     if (CoreFunctions._instance) {
       return CoreFunctions._instance;
@@ -42,6 +42,11 @@ class CoreFunctions {
     return cy.get(locator);
   }
 
+  /* Find webelement in the current landing page. */
+  get(alias) {
+    return cy.get(alias);
+  }
+
   /* Type text in the webelement locator in the current landing page. */
   clear() {
     return cy.clear();
@@ -51,7 +56,23 @@ class CoreFunctions {
   type(locator, text) {
     this.findElement(locator).clear().type(text);
   }
+
+  /* Mask sensitive text in the webelement locator in the current landing page. */
+  typeSensitive(locator, text) {
+    this.findElement(locator).clear().type(text, { sensitive: true });
+  }
+
+  /* Saves a file in the desired path/directory */
+  writeFile(filePath, contents) {
+    return cy.writeFile(filePath, contents);
+  }
+
+  /* Reads a file from the desired path/directory */
+  readFile(filePath) {
+    return cy.readFile(filePath);
+  }
 }
+
 /* Create an instance and export. */
 const coreFunctions = new CoreFunctions();
 export default coreFunctions;

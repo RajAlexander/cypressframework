@@ -13,7 +13,7 @@
     "cy:clean-videos": "if exist cypress\\videos rmdir /s/q cypress\\videos",
     "cy:pretest": "npm run cy:clean-reports && npm run cy:clean-snapshots && npm run cy:clean-videos",
     "cy:posttest": "node cucumber-html-report.js",
-    "cy:run": "cypress run",
+    "cy:run": "npx cypress run --record --key 82782773-8af9-4fa0-8b3c-30b7a3bdc322",
     "cy:scripts": "npm run cy:pretest && npm run cy:run || npm run cy:posttest",
     "cy:open": "cypress open"
   },

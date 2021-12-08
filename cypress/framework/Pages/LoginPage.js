@@ -1,5 +1,4 @@
 import coreFunctions from "../Utils/CoreFunctions";
-
 class LoginPage {
   /* Singleton Pattern for single instance creation. */
   constructor() {
@@ -7,6 +6,7 @@ class LoginPage {
       return LoginPage._instance;
     }
     LoginPage._instance = this;
+
     this.userIdLocator = "#input-1";
     this.passwordLocator = "#input-2";
     this.loginButtonLocator = "button[type='submit']";
@@ -14,13 +14,46 @@ class LoginPage {
 
   /* Input userId credentials. */
   loginViaUI(username, password) {
-    cy.visit("/login");
-    this.username(username);
-    this.password(password);
+    coreFunctions.visit("/login");
+    this.usernameInput(username);
+    this.passwordInput(password);
     this.clickLoginButton();
   }
 
   /* Input userId credentials. */
+  usernameInput(userId) {
+    return coreFunctions.type(this.userIdLocator, userId);
+  }
+
+  /* Input passoword credentials. */
+  passwordInput(password) {
+    return coreFunctions.type(this.passwordLocator, password);
+  }
+
+  /* Click Login Button. */
+  clickLoginButton() {
+    return coreFunctions.findElement(this.loginButtonLocator).click();
+  }
+
+  /* Login page error validations. */
+  validateFail(expectedText) {
+    cy.get(".login-error").should("have.length", 1);
+    cy.get(".login-error").then(($div) => {
+      const actualText = $div.text();
+      expect(actualText).to.include(expectedText);
+    });
+  }
+
+  /* Login page success validations. */
+  validatePass(expectedText) {
+    cy.get(".box h1").should("have.length", 1);
+    cy.get(".box h1").then(($div) => {
+      const actualText = $div.text();
+      expect(actualText).to.include(expectedText);
+    });
+  }
+
+  /* Login using API session */
   loginViaAPISession(username, password) {
     cy.session(
       [username, password],
@@ -44,37 +77,6 @@ class LoginPage {
         },
       }
     );
-  }
-
-  /* Input userId credentials. */
-  username(userId) {
-    return coreFunctions.type(this.userIdLocator, userId);
-  }
-
-  /* Input passoword credentials. */
-  password(password) {
-    return coreFunctions.type(this.passwordLocator, password);
-  }
-
-  /* Click Login Button. */
-  clickLoginButton() {
-    return coreFunctions.findElement(this.loginButtonLocator).click();
-  }
-
-  validateFail(expectedText) {
-    cy.get(".login-error").should("have.length", 1);
-    cy.get(".login-error").then(($div) => {
-      const actualText = $div.text();
-      expect(actualText).to.include(expectedText);
-    });
-  }
-
-  validatePass(expectedText) {
-    cy.get(".box h1").should("have.length", 1);
-    cy.get(".box h1").then(($div) => {
-      const actualText = $div.text();
-      expect(actualText).to.include(expectedText);
-    });
   }
 }
 
