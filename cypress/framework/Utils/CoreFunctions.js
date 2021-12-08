@@ -18,6 +18,11 @@ class CoreFunctions {
   }
 
   /* Intercept any Https call and assign an alias name. */
+  request(method, url, body) {
+    return cy.request(method, url, body);
+  }
+
+  /* Intercept any Https call and assign an alias name. */
   intercept(query, alias) {
     return cy.intercept(query).as(alias);
   }
@@ -74,5 +79,5 @@ class CoreFunctions {
 }
 
 /* Create an instance and export. */
-const coreFunctions = new CoreFunctions();
-export default coreFunctions;
+const core = new CoreFunctions();
+export default core;

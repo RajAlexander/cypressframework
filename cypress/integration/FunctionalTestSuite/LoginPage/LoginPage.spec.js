@@ -6,20 +6,20 @@ import {
   Before,
   After,
 } from "cypress-cucumber-preprocessor/steps";
-import coreFunctions from "../../../framework/Utils/CoreFunctions";
+import core from "../../../framework/Utils/CoreFunctions";
 import loginPage from "../../../framework/Pages/LoginPage";
 import welcomePage from "../../../framework/Pages/WelcomePage";
 
 Before(() => {
-  coreFunctions.log("Login Tests - Started");
+  core.log("Login Tests - Started");
 });
 
 After(() => {
-  coreFunctions.log("Login Tests - Finished");
+  core.log("Login Tests - Finished");
 });
 
 Given("A user enters to the login page.", () => {
-  coreFunctions.visit("/");
+  core.visit("/");
 });
 
 When("A user provides below user credentials.", (dataTable) => {
@@ -31,11 +31,11 @@ When("A user provides below user credentials.", (dataTable) => {
       Password,
     });
   });
-  cy.writeFile("./cypress/fixtures/userData.json", JSON.stringify(users));
+  core.writeFile("./cypress/fixtures/userData.json", JSON.stringify(users));
 });
 
 Then("{string} should be displayed on the login page.", (expectedString) => {
-  cy.readFile("./cypress/fixtures/userData.json").then(function (users) {
+  core.readFile("./cypress/fixtures/userData.json").then(function (users) {
     users.forEach((user) => {
       loginPage.loginViaUI(user.Username, user.Password);
       loginPage.validateFail(expectedString);
@@ -57,25 +57,25 @@ And("/login request is intercepted.", () => {
     method: "POST",
     path: "/api/user/login",
   };
-  coreFunctions.intercept(routeMatcher, "login");
+  core.intercept(routeMatcher, "login");
 });
 
 Then(
   "/login request should give {int} Unauthorized status code.",
   (_statusCode) => {
-    coreFunctions.waitForObject("@login").then((resolve) => {
+    core.waitForObject("@login").then((resolve) => {
       expect(resolve.response.statusCode).to.eq(_statusCode);
     });
   }
 );
 
 Then("/login request should give {int} status code.", (_statusCode) => {
-  coreFunctions.waitForObject("@login").then((resolve) => {
+  core.waitForObject("@login").then((resolve) => {
     expect(resolve.response.statusCode).to.eq(_statusCode);
   });
 });
 
 And("Logout button can be clicked on the Welcome Page.", () => {
-  coreFunctions.getCurrentUrl("/welcome");
+  core.getCurrentUrl("/welcome");
   welcomePage.clickLogoutButton();
 });

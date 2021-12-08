@@ -1,6 +1,7 @@
 {
     "baseUrl": "https://qa-practical.qa.swimlane.io",
     "experimentalSessionSupport": true,
+    "experimentalStudio": true,
     "testFiles": "**/*.feature",
     "projectId": "8zdt8j"
 }

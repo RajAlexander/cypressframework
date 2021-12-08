@@ -1,4 +1,4 @@
-import coreFunctions from "../Utils/CoreFunctions";
+import core from "../Utils/CoreFunctions";
 class WelcomePage {
   /* Singleton Pattern for single instance creation. */
   constructor() {
@@ -15,19 +15,21 @@ class WelcomePage {
   }
 
   /* Get page Title */
-  getTitle() {
-    return coreFunctions.findElement(this.pageTitleLocator);
+  getTitle(pageTitle) {
+    return core.findElement(this.pageTitleLocator).then(($el) => {
+      expect($el.text().trim()).to.eq(pageTitle);
+    });
   }
 
   /* Click Logout Button */
   clickLogoutButton() {
-    coreFunctions.findElement(this.userProfileLocator).click({ force: true });
-    coreFunctions.findElement(this.logoutLocator).click();
+    core.findElement(this.userProfileLocator).click({ force: true });
+    core.findElement(this.logoutLocator).click();
   }
 
   /* Click Home Button */
   clickHomeButton() {
-    return coreFunctions.get(this.navigationMenuLocator);
+    return core.get(this.navigationMenuLocator);
   }
 }
 
