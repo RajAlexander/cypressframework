@@ -18,26 +18,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: Download the build folders
-        uses: actions/download-artifact@v2
-        with:
-          name: build
-          path: build
-
-      - name: 'UI Tests - Chrome'
+      - name: Cypress run
         uses: cypress-io/github-action@v2
-        with:
-          # we have already installed all dependencies above
-          install: false
-          start: yarn start:ci
-          wait-on: 'http://localhost:3000'
-          wait-on-timeout: 120
-          browser: chrome
-          record: true
-          parallel: true
-          group: 'UI - Chrome'
-          spec: cypress/tests/ui/*
+        wait-on-timeout: 120
+        browser: chrome
+        record: true
+        parallel: true
+        group: 'UI - Chrome'
+        spec: cypress/integration/*
         env:
           CYPRESS_RECORD_KEY: 82782773-8af9-4fa0-8b3c-30b7a3bdc322
           # Recommended: pass the GitHub token lets this action correctly
