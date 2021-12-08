@@ -1,6 +1,6 @@
 {
   "$schema": "https://on.cypress.io/cypress.schema.json",
-  "baseUrl": "https://qa-practical.qa.swimlane.io/login",
+  "baseUrl": "https://qa-practical.qa.swimlane.io",
   "experimentalSessionSupport": true,
   "testFiles": "**/*.feature",
   "chromeWebSecurity": false,

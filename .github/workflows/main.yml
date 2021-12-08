@@ -17,3 +17,8 @@ jobs:
         with:
           name: cypress-cucumber-report
           path: cypress/reports/
+        env:
+          CYPRESS_RECORD_KEY: 82782773-8af9-4fa0-8b3c-30b7a3bdc322
+          # Recommended: pass the GitHub token lets this action correctly
+          # determine the unique run id necessary to re-run the checks
+          GITHUB_TOKEN: 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

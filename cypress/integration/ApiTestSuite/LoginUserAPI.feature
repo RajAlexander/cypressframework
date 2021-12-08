@@ -1,8 +1,8 @@
-Feature: User Login API
+Feature: User Login API intercept
 
-    API where the users can login to their accounts.
+    Intercept login API when the users login to their accounts.
 
-    Background: user/login API
+    Background: User login via UI.
         Given A user enters to the login page.
 
     Scenario: Valid users.

@@ -75,7 +75,7 @@ Then("/login request should give {int} status code.", (_statusCode) => {
   });
 });
 
-And("Logout button should be clicked on the Welcome Page.", () => {
+And("Logout button can be clicked on the Welcome Page.", () => {
   coreFunctions.getCurrentUrl("/welcome");
   welcomePage.clickLogoutButton();
 });

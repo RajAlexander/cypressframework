@@ -8,42 +8,69 @@ commands please read more here:
 https://on.cypress.io/custom-commands
 ***********************************************/
 
-/* This is a parent command */
-Cypress.Commands.add("login", (email, password) => {
-  console.log("login method");
-});
-
-Cypress.Commands.add("loginViaUI", (username, password) => {
-  cy.visit("/")
-  cy.get("input#username").type(username)
-  cy.get("input#password").type(password)
-  cy.get("button#submit").click()
-})
-
-Cypress.Commands.add("loginViaAPI", (uname, pwd) => {
-  cy.request({
-    method: "POST",
-    url: Cypress.env("apiserver") + "/api/user/login",
-    body: {
-      username: uname,
-      password: pwd
-    }
-  }).then(res => {
-    expect(res.status).to.eq(200)
-    window.localStorage.setItem("token", JSON.stringify(res.body))
-  })
-})
-
 /* This will overwrite an existing visit command */
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-/* Get Text Value Command */
-Cypress.Commands.add("getText", {
-  prevSubject: "element"
-}, (prevSub) => {
-  // return prevSub.text();
-  cy.wrap(prevSub.text());
+Cypress.Commands.add("createUser", (user) => {
+  cy.request({
+    method: "POST",
+    url: "https://www.example.com/tokens",
+    body: {
+      email: "admin_username",
+      password: "admin_password",
+    },
+  }).then((resp) => {
+    cy.request({
+      method: "POST",
+      url: "https://www.example.com/users",
+      headers: { Authorization: "Bearer " + resp.body.token },
+      body: user,
+    });
+  });
 });
+
+/* To mask sensitive information on Test runner while typing */
+Cypress.Commands.overwrite("type", (originalFn, element, text, options) => {
+  if (options && options.sensitive) {
+    // turn off original log
+    options.log = false;
+    // create our own log with masked message
+    Cypress.log({
+      $el: element,
+      name: "type",
+      message: "*".repeat(text.length),
+    });
+  }
+
+  return originalFn(element, text, options);
+});
+
+/* Case insensitive comparision when using cy.contain */
+Cypress.Commands.overwrite(
+  "contains",
+  (originalFn, subject, filter, text, options = {}) => {
+    // determine if a filter argument was passed
+    if (typeof text === "object") {
+      options = text;
+      text = filter;
+      filter = undefined;
+    }
+    options.matchCase = false;
+    return originalFn(subject, filter, text, options);
+  }
+);
+
+/* Get Text Value Command */
+Cypress.Commands.add(
+  "getText",
+  {
+    prevSubject: "element",
+  },
+  (prevSub) => {
+    // return prevSub.text();
+    cy.wrap(prevSub.text());
+  }
+);
 
 /* Get Table Cell Value */
 Cypress.Commands.add("getCellValue", (row, col) => {
@@ -55,12 +82,16 @@ Cypress.Commands.add("getCellValue", (row, col) => {
 });
 
 /* Get the body of iFrame */
-Cypress.Commands.add("iframe", {
-  prevSubject: "element"
-}, (iframe) => {
-  return new Cypress.Promise((resolve) => {
-    iframe.ready(() => {
-      resolve(iframe.contents().find("body"));
+Cypress.Commands.add(
+  "iframe",
+  {
+    prevSubject: "element",
+  },
+  (iframe) => {
+    return new Cypress.Promise((resolve) => {
+      iframe.ready(() => {
+        resolve(iframe.contents().find("body"));
+      });
     });
-  });
-});
+  }
+);
