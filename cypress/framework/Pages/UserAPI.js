@@ -1,3 +1,5 @@
+import core from "../Utils/CoreFunctions";
+
 class UserAPI {
   constructor() {
     if (UserAPI._instance) {
@@ -16,7 +18,7 @@ class UserAPI {
   }
 
   userLoginRequest = () => {
-    return cy.request(this.postMethod, this.loginURL, this.body);
+    return core.request(this.postMethod, this.loginURL, this.body);
   };
 }
 

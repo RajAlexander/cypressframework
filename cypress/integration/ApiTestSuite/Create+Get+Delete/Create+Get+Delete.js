@@ -1,7 +1,7 @@
 import { And, Given, Then } from "cypress-cucumber-preprocessor/steps";
-import coreFunctions from "../../../framework/Utils/CoreFunctions";
-import userAPI from "../../../framework/Pages/PageJSON/UserAPI";
-import recordAPI from "../../../framework/Pages/PageJSON/RecordAPI";
+import core from "../../../framework/Utils/CoreFunctions";
+import userAPI from "../../../framework/Pages/UserAPI";
+import recordAPI from "../../../framework/Pages/RecordAPI";
 
 Then(
   "Make a POST call to create employee record and validate its response.",

@@ -1,4 +1,4 @@
-import coreFunctions from "../Utils/CoreFunctions";
+import core from "../Utils/CoreFunctions";
 class LoginPage {
   /* Singleton Pattern for single instance creation. */
   constructor() {
@@ -14,7 +14,7 @@ class LoginPage {
 
   /* Input userId credentials. */
   loginViaUI(username, password) {
-    coreFunctions.visit("/login");
+    core.visit("/login");
     this.usernameInput(username);
     this.passwordInput(password);
     this.clickLoginButton();
@@ -22,17 +22,17 @@ class LoginPage {
 
   /* Input userId credentials. */
   usernameInput(userId) {
-    return coreFunctions.type(this.userIdLocator, userId);
+    return core.type(this.userIdLocator, userId);
   }
 
   /* Input passoword credentials. */
   passwordInput(password) {
-    return coreFunctions.type(this.passwordLocator, password);
+    return core.type(this.passwordLocator, password);
   }
 
   /* Click Login Button. */
   clickLoginButton() {
-    return coreFunctions.findElement(this.loginButtonLocator).click();
+    return core.findElement(this.loginButtonLocator).click();
   }
 
   /* Login page error validations. */
@@ -58,21 +58,23 @@ class LoginPage {
     cy.session(
       [username, password],
       () => {
-        cy.request({
-          method: "POST",
-          url: Cypress.env("apiserver") + "/api/user/login",
-          body: {
-            username: username,
-            password: password,
-          },
-        }).then((res) => {
-          expect(res.status).to.eq(200);
-          window.localStorage.setItem("token", JSON.stringify(res.body));
-        });
+        core
+          .request({
+            method: "POST",
+            url: Cypress.env("apiserver") + "/api/user/login",
+            body: {
+              username: username,
+              password: password,
+            },
+          })
+          .then((res) => {
+            expect(res.status).to.eq(200);
+            window.localStorage.setItem("token", JSON.stringify(res.body));
+          });
       },
       {
         validate() {
-          cy.visit("/");
+          core.visit("/");
           cy.get("div > img").should("be.visible");
         },
       }

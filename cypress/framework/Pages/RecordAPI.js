@@ -1,5 +1,5 @@
 import { Given } from "cypress-cucumber-preprocessor/steps";
-import coreFunctions from "../../Utils/CoreFunctions";
+import core from "../Utils/CoreFunctions";
 
 class RecordAPI {
   constructor() {
@@ -44,10 +44,7 @@ class RecordAPI {
   /* Create Record API implementation */
   createRecordRequest = (response) => {
     this.userLoginResponse = response;
-    coreFunctions.writeFile(
-      this.pathToLoginApiResponseFolder,
-      JSON.stringify(response)
-    );
+    core.writeFile(this.pathToLoginApiResponseFolder, JSON.stringify(response));
 
     /* POST Request PayLoad */
     const options = {
@@ -61,10 +58,10 @@ class RecordAPI {
     };
 
     /* POST Request call */
-    cy.request(options).then((response) => {
-      if (response.status == 200) coreFunctions.log("Success");
-      else coreFunctions.log("Bad Request");
-      coreFunctions.writeFile(
+    core.request(options).then((response) => {
+      if (response.status == 200) core.log("Success");
+      else core.log("Bad Request");
+      core.writeFile(
         this.pathToCreateRecordApiResponseFolder,
         JSON.stringify(response)
       );
@@ -75,65 +72,61 @@ class RecordAPI {
   getRecordRequest = (response) => {
     this.userLoginResponse = response;
     //this.createRecordRequest(this.userLoginResponse)
-    coreFunctions
-      .readFile(this.pathToCreateRecordApiResponseFolder)
-      .then((response) => {
-        coreFunctions.writeFile(
+    core.readFile(this.pathToCreateRecordApiResponseFolder).then((response) => {
+      core.writeFile(
+        this.pathToCreateRecordApiResponseFolder,
+        JSON.stringify(response)
+      );
+
+      /* GET Request PayLoad */
+      const options = {
+        method: this.getMethod,
+        url: this.createRecordURL + "/" + response.body.id,
+        headers: {
+          Authorization: "Bearer " + this.userLoginResponse.body.token,
+        },
+        failOnStatusCode: false,
+      };
+
+      /* GET Request Call */
+      core.request(options).then((response) => {
+        if (response.status == 200) core.log("Success");
+        else core.log("Bad Request");
+        core.writeFile(
           this.pathToCreateRecordApiResponseFolder,
           JSON.stringify(response)
         );
-
-        /* GET Request PayLoad */
-        const options = {
-          method: this.getMethod,
-          url: this.createRecordURL + "/" + response.body.id,
-          headers: {
-            Authorization: "Bearer " + this.userLoginResponse.body.token,
-          },
-          failOnStatusCode: false,
-        };
-
-        /* GET Request Call */
-        cy.request(options).then((response) => {
-          if (response.status == 200) coreFunctions.log("Success");
-          else coreFunctions.log("Bad Request");
-          coreFunctions.writeFile(
-            this.pathToCreateRecordApiResponseFolder,
-            JSON.stringify(response)
-          );
-        });
       });
+    });
   };
 
   /* Delete Record API implementation */
   deleteRecordRequest = (response) => {
     this.userLoginResponse = response;
     //this.createRecordRequest(this.userLoginResponse)
-    coreFunctions
-      .readFile(this.pathToCreateRecordApiResponseFolder)
-      .then((response) => {
-        coreFunctions.writeFile(
-          this.pathToCreateRecordApiResponseFolder,
-          JSON.stringify(response)
-        );
+    core.readFile(this.pathToCreateRecordApiResponseFolder).then((response) => {
+      core.writeFile(
+        this.pathToCreateRecordApiResponseFolder,
+        JSON.stringify(response)
+      );
 
-        /* DELETE Request PayLoad */
-        const options = {
-          method: this.deleteMethod,
-          url: this.createRecordURL + "/" + response.body.id,
-          headers: {
-            Authorization: "Bearer " + this.userLoginResponse.body.token,
-          },
-          failOnStatusCode: false,
-        };
+      /* DELETE Request PayLoad */
+      const options = {
+        method: this.deleteMethod,
+        url: this.createRecordURL + "/" + response.body.id,
+        headers: {
+          Authorization: "Bearer " + this.userLoginResponse.body.token,
+        },
+        failOnStatusCode: false,
+      };
 
-        /* DELETE Request Call */
-        cy.request(options).then((response) => {
-          expect(response.status).is.equal(204);
-          if (response.status == 204) coreFunctions.log("Success");
-          else coreFunctions.log("Bad Request");
-        });
+      /* DELETE Request Call */
+      core.request(options).then((response) => {
+        expect(response.status).is.equal(204);
+        if (response.status == 204) core.log("Success");
+        else core.log("Bad Request");
       });
+    });
   };
 }
 

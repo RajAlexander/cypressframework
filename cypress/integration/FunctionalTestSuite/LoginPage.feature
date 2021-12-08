@@ -1,4 +1,4 @@
-Feature: Login
+Feature: Login Page Feature
 
     Page where the users can login to their accounts.
 
