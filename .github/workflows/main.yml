@@ -1,36 +1,15 @@
-name: Cypress Tests with Install Job and UI Chrome Job x 5
-
+name: End-to-end tests
 on: [push]
-
 jobs:
-  install:
-  # ...
-
-  ui-chrome-tests:
-    runs-on: ubuntu-latest
-    container: cypress/browsers:node12.18.3-chrome87-ff82
-    needs: install
-    strategy:
-      fail-fast: false
-      matrix:
-        # run copies of the current job in parallel
-        containers: [1, 2, 3, 4, 5]
+  cypress-run:
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      # Install NPM dependencies, cache them correctly
+      # and run all Cypress tests
       - name: Cypress run
         uses: cypress-io/github-action@v2
-        wait-on-timeout: 120
-        browser: chrome
-        record: true
-        parallel: true
-        group: 'UI - Chrome'
-        spec: cypress/integration/*
-        env:
-          CYPRESS_RECORD_KEY: 82782773-8af9-4fa0-8b3c-30b7a3bdc322
-          # Recommended: pass the GitHub token lets this action correctly
-          # determine the unique run id necessary to re-run the checks
-          GITHUB_TOKEN: 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
       - name: Generate report
         run: npm run cy:posttest
       - name: Upload report
@@ -38,3 +17,8 @@ jobs:
         with:
           name: cypress-cucumber-report
           path: cypress/reports/
+        env:
+          CYPRESS_RECORD_KEY: 82782773-8af9-4fa0-8b3c-30b7a3bdc322
+          # Recommended: pass the GitHub token lets this action correctly
+          # determine the unique run id necessary to re-run the checks
+          GITHUB_TOKEN: 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
