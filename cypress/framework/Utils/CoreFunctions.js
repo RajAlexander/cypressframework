@@ -1,4 +1,3 @@
-/// <reference types="cypress" />
 class CoreFunctions {
   /* Singleton Pattern for single instance creation. */
   constructor() {
@@ -14,7 +13,7 @@ class CoreFunctions {
 
   /* Navigate to url. */
   visit(url) {
-    return cy.visit(url);
+    return cy.visit(url, { failOnStatusCode: false });
   }
 
   /* Intercept any Https call and assign an alias name. */

@@ -5,7 +5,10 @@ import welcomePage from "../../../framework/Pages/WelcomePage";
 import core from "../../../framework/Utils/CoreFunctions";
 
 Given("A user is logged into the Swimlane application.", () => {
-  loginPage.loginViaUI(Cypress.env("username"), Cypress.env("password"));
+  core.visit("/login");
+  loginPage.usernameInput(Cypress.env("username"));
+  loginPage.passwordInput(Cypress.env("password"));
+  loginPage.clickLoginButton();
 });
 
 When("A user is on the Welcome Page.", () => {
