@@ -13,14 +13,6 @@ class LoginPage {
   }
 
   /* Input userId credentials. */
-  loginViaUI(username, password) {
-    core.visit("/login");
-    this.usernameInput(username);
-    this.passwordInput(password);
-    this.clickLoginButton();
-  }
-
-  /* Input userId credentials. */
   usernameInput(userId) {
     return core.type(this.userIdLocator, userId);
   }

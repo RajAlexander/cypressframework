@@ -19,7 +19,7 @@ After(() => {
 });
 
 Given("A user enters to the login page.", () => {
-  core.visit("/");
+  core.visit("/login");
 });
 
 When("A user provides below user credentials.", (dataTable) => {
@@ -37,7 +37,9 @@ When("A user provides below user credentials.", (dataTable) => {
 Then("{string} should be displayed on the login page.", (expectedString) => {
   core.readFile("./cypress/fixtures/userData.json").then(function (users) {
     users.forEach((user) => {
-      loginPage.loginViaUI(user.Username, user.Password);
+      loginPage.usernameInput(user.Username);
+      loginPage.passwordInput(user.Password);
+      loginPage.clickLoginButton();
       loginPage.validateFail(expectedString);
     });
   });
@@ -46,7 +48,9 @@ Then("{string} should be displayed on the login page.", (expectedString) => {
 Then("{string} should be displayed on the welcome page.", (expectedString) => {
   cy.readFile("./cypress/fixtures/userData.json").then(function (users) {
     users.forEach((user) => {
-      loginPage.loginViaUI(user.Username, user.Password);
+      loginPage.usernameInput(user.Username);
+      loginPage.passwordInput(user.Password);
+      loginPage.clickLoginButton();
       loginPage.validatePass(expectedString);
     });
   });

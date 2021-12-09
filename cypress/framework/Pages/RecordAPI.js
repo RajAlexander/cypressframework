@@ -71,7 +71,8 @@ class RecordAPI {
   /* Get Record API implementation */
   getRecordRequest = (response) => {
     this.userLoginResponse = response;
-    //this.createRecordRequest(this.userLoginResponse)
+    /* To cover extra scenario in the near future:
+    this.createRecordRequest(this.userLoginResponse) */
     core.readFile(this.pathToCreateRecordApiResponseFolder).then((response) => {
       core.writeFile(
         this.pathToCreateRecordApiResponseFolder,
@@ -103,7 +104,6 @@ class RecordAPI {
   /* Delete Record API implementation */
   deleteRecordRequest = (response) => {
     this.userLoginResponse = response;
-    //this.createRecordRequest(this.userLoginResponse)
     core.readFile(this.pathToCreateRecordApiResponseFolder).then((response) => {
       core.writeFile(
         this.pathToCreateRecordApiResponseFolder,

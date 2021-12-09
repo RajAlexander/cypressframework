@@ -8,33 +8,12 @@ commands please read more here:
 https://on.cypress.io/custom-commands
 ***********************************************/
 
-/* This will overwrite an existing visit command */
-// Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
-
-Cypress.Commands.add("createUser", (user) => {
-  cy.request({
-    method: "POST",
-    url: "https://www.example.com/tokens",
-    body: {
-      email: "admin_username",
-      password: "admin_password",
-    },
-  }).then((resp) => {
-    cy.request({
-      method: "POST",
-      url: "https://www.example.com/users",
-      headers: { Authorization: "Bearer " + resp.body.token },
-      body: user,
-    });
-  });
-});
-
 /* To mask sensitive information on Test runner while typing */
 Cypress.Commands.overwrite("type", (originalFn, element, text, options) => {
   if (options && options.sensitive) {
-    // turn off original log
+    /* turn off original log */
     options.log = false;
-    // create our own log with masked message
+    /* create our own log with masked message */
     Cypress.log({
       $el: element,
       name: "type",
