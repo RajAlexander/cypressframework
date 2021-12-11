@@ -12,7 +12,7 @@ Feature: Login Page Feature
             | naresh.raj | 8JB2z4#Wu2l! |
         Then "Complete Your Profile" should be displayed on the welcome page.
         And Logout button can be clicked on the Welcome Page.
-
+    
     Scenario: Invalid users.
 
         When A user provides below user credentials.
