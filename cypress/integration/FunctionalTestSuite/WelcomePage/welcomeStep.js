@@ -4,15 +4,20 @@ import loginPage from "../../../framework/Pages/LoginPage";
 import welcomePage from "../../../framework/Pages/WelcomePage";
 import core from "../../../framework/Utils/CoreFunctions";
 
+const username = Cypress.env("username");
+const password = Cypress.env("password");
+const loginURI = Cypress.env("loginURI");
+const welcomeURI = Cypress.env("welcomeURI");
+const userDataFixture = Cypress.env("userDataFixture");
+const employeeDataFixture = Cypress.env("employeeDataFixture");
+
 Given("A user is logged into the Swimlane application.", () => {
-  core.visit("/login");
-  loginPage.usernameInput(Cypress.env("username"));
-  loginPage.passwordInput(Cypress.env("password"));
-  loginPage.clickLoginButton();
+  core.visit(loginURI);
+  loginPage.usernameInput(username).passwordInput(password).login();
 });
 
 When("A user is on the Welcome Page.", () => {
-  core.getCurrentUrl("/welcome");
+  core.getCurrentUrl(welcomeURI);
 });
 
 Then("WelcomePage title must contain {string}.", (pageTitle) => {
@@ -32,8 +37,7 @@ When(
         ZipCode,
       });
     });
-    core.writeFile(
-      "./cypress/fixtures/employeesData.json",
+    core.writeFile(employeeDataFixture,
       JSON.stringify(employees)
     );
   }
@@ -43,7 +47,7 @@ Then(
   "An employee tracking ID is generated when the user clicks Save button on the form Page.",
   () => {
     core
-      .readFile("./cypress/fixtures/employeesData.json")
+      .readFile(employeeDataFixture)
       .then(function (employees) {
         employees.forEach((employee) => {
           employeePage.clickSaveButton(employee);

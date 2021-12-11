@@ -10,6 +10,11 @@ import core from "../../../framework/Utils/CoreFunctions";
 import loginPage from "../../../framework/Pages/LoginPage";
 import welcomePage from "../../../framework/Pages/WelcomePage";
 
+const routeMatcher = {
+  method: Cypress.env("postMethod"),
+  path: Cypress.env("loginApiURI")
+};
+
 Before(() => {
   core.log("Login API Intercept Test - Started");
 });
@@ -19,7 +24,7 @@ After(() => {
 });
 
 Given("A user enters to the login page.", () => {
-  core.visit("/login");
+  core.visit(Cypress.env("loginURI"));
 });
 
 When("A user provides below user credentials.", (dataTable) => {
@@ -32,45 +37,29 @@ When("A user provides below user credentials.", (dataTable) => {
     });
   });
   core.log("User credentials are saved in fixture folder as userData.json");
-  core.writeFile("./cypress/fixtures/userData.json", JSON.stringify(users));
+  core.writeFile(Cypress.env("userDataFixture"), JSON.stringify(users));
 });
 
 And("/login request is intercepted.", () => {
-  const routeMatcher = {
-    method: "POST",
-    path: "/api/user/login",
-  };
-  core.readFile("./cypress/fixtures/userData.json").then(function (users) {
+  core.readFile(Cypress.env("userDataFixture")).then(function (users) {
     users.forEach((user) => {
-      loginPage.usernameInput(user.Username);
-      loginPage.passwordInput(user.Password);
       core.intercept(routeMatcher, "login");
-      loginPage.clickLoginButton();
+      loginPage.usernameInput(user.Username).passwordInput(user.Password).login();
     });
   });
 });
 
-Then(
-  "Save token and /login response should give {int} status code.",
-  (_statusCode) => {
-    core.waitForObject("@login").then((resolve) => {
-      expect(resolve.response.statusCode).to.eq(_statusCode);
-      core.log(
-        "User login is intercepted and response saved in payload folder"
-      );
-      core.writeFile(
-        "./cypress/payload/login/response/responseBody.json",
-        JSON.stringify(resolve.response.body)
-      );
-    });
-  }
-);
+Then("Save token and /login response should give {int} status code.", (_statusCode) => {
+  core.waitForObject("@login").then((resolve) => {
+    expect(resolve.response.statusCode).to.eq(_statusCode);
+    core.log(
+      "User login is intercepted and response saved in payload folder"
+    );
+  });
+});
 
-Then(
-  "/login response should give {int} Unauthorized status code.",
-  (_statusCode) => {
-    core.waitForObject("@login").then((resolve) => {
-      expect(resolve.response.statusCode).to.eq(_statusCode);
-    });
-  }
-);
+Then("/login response should give {int} Unauthorized status code.", (_statusCode) => {
+  core.waitForObject("@login").then((resolve) => {
+    expect(resolve.response.statusCode).to.eq(_statusCode);
+  });
+});

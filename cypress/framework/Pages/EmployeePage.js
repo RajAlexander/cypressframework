@@ -1,25 +1,24 @@
 import core from "../Utils/CoreFunctions";
+
+const newEmployeeSubmissionButtonLocator = ".app-buttons";
+const firstNameInputLocator =
+  ":nth-child(1) > :nth-child(1) > .form-group > :nth-child(2) > [ng-switch='field.fieldType'] > [ng-switch-when='text'] > [ng-if='!isReadOnly()'] > div > .form-input";
+const lastNameInputLocator =
+  ":nth-child(1) > :nth-child(2) > .form-group > :nth-child(2) > [ng-switch='field.fieldType'] > [ng-switch-when='text'] > [ng-if='!isReadOnly()'] > div > .form-input";
+const cityInputLocator =
+  ":nth-child(1) > .col-md-12 > .panel > .panel-body > :nth-child(2) > :nth-child(2) > .form-group > :nth-child(2) > [ng-switch='field.fieldType'] > [ng-switch-when='text'] > [ng-if='!isReadOnly()'] > div > .form-input";
+const zipCodeInputLocator = "[ng-switch-when='numeric'] > div > .form-input";
+const saveButtonLocator = ".nav > :nth-child(1) > .btn";
+const timeSpentSaveButtonLocator =
+  "body > div:last-child > div > div > div:last-child > button.btn";
+const employeeIdLocator =
+  "div.page-toolbar div  div h4 > span:last-child > span";
+
 class EmployeePage {
   /* Singleton Pattern for single instance creation. */
   constructor() {
-    if (EmployeePage._instance) {
-      return EmployeePage._instance;
-    }
+    if (EmployeePage._instance) return EmployeePage._instance;
     EmployeePage._instance = this;
-
-    this.newEmployeeSubmissionButtonLocator = ".app-buttons";
-    this.firstNameInputLocator =
-      ":nth-child(1) > :nth-child(1) > .form-group > :nth-child(2) > [ng-switch='field.fieldType'] > [ng-switch-when='text'] > [ng-if='!isReadOnly()'] > div > .form-input";
-    this.lastNameInputLocator =
-      ":nth-child(1) > :nth-child(2) > .form-group > :nth-child(2) > [ng-switch='field.fieldType'] > [ng-switch-when='text'] > [ng-if='!isReadOnly()'] > div > .form-input";
-    this.cityInputLocator =
-      ":nth-child(1) > .col-md-12 > .panel > .panel-body > :nth-child(2) > :nth-child(2) > .form-group > :nth-child(2) > [ng-switch='field.fieldType'] > [ng-switch-when='text'] > [ng-if='!isReadOnly()'] > div > .form-input";
-    this.zipCodeInputLocator = "[ng-switch-when='numeric'] > div > .form-input";
-    this.saveButtonLocator = ".nav > :nth-child(1) > .btn";
-    this.timeSpentSaveButtonLocator =
-      "body > div:last-child > div > div > div:last-child > button.btn";
-    this.employeeIdLocator =
-      "div.page-toolbar div  div h4 > span:last-child > span";
   }
 
   /* Get page Title */
@@ -27,31 +26,31 @@ class EmployeePage {
     return core.findElement(this.pageTitleLocator);
   }
 
-  /* Click Delete Button */
+  /* Click Save Button */
   clickSaveButton(employee) {
     this.employee = employee;
-    core.findElement(this.newEmployeeSubmissionButtonLocator).click();
-    core.findElement(this.firstNameInputLocator).type(this.employee.FirstName);
-    core.findElement(this.lastNameInputLocator).type(this.employee.LastName);
-    core.findElement(this.cityInputLocator).type(this.employee.City);
-    core.findElement(this.zipCodeInputLocator).type(this.employee.ZipCode);
-    core.findElement(this.saveButtonLocator).click();
-    core.findElement(this.timeSpentSaveButtonLocator).focus().click();
-    core.findElement(this.employeeIdLocator).then(($el) => {
-      this.employee.Id = $el.text().trim();
+    core.findElement(newEmployeeSubmissionButtonLocator).click();
+    core.findElement(firstNameInputLocator).type(employee.FirstName);
+    core.findElement(lastNameInputLocator).type(employee.LastName);
+    core.findElement(cityInputLocator).type(employee.City);
+    core.findElement(zipCodeInputLocator).type(employee.ZipCode);
+    core.findElement(saveButtonLocator).click();
+    core.findElement(timeSpentSaveButtonLocator).focus().click();
+    core.findElement(employeeIdLocator).then(($element) => {
+      this.employee.Id = $element.text().trim();
       core.log("Employee Tracking Id: " + this.employee.Id.toString());
-      core.writeFile("./corepress/fixtures/employeeData.json", this.employee);
+      core.writeFile("./cypress/fixtures/employeeData.json", this.employee);
     });
   }
 
   /* Click Delete Button */
   clickDeleteButton() {
-    return core.get(this.navigationMenuLocator);
+    return core.get(deleteButtonLocator);
   }
 
-  /* Click Delete Button */
+  /* Verify the employee record created */
   verifyEmployeeRecordCreated() {
-    return core.get(this.navigationMenuLocator);
+    return core.get(navigationMenuLocator);
   }
 }
 

@@ -1,26 +1,26 @@
 import core from "../Utils/CoreFunctions";
 
-class UserAPI {
-  constructor() {
-    if (UserAPI._instance) {
-      return UserAPI._instance;
-    }
-    UserAPI._instance = this;
+const POST = Cypress.env("postMethod");
+const loginURL = Cypress.env("apiserver") + Cypress.env("loginApiURI");
+const body = {
+  username: Cypress.env("username"),
+  password: Cypress.env("password"),
+};
 
-    this.postMethod = Cypress.env("postMethod");
-    this.getMethod = Cypress.env("getMethod");
-    this.deleteMethod = Cypress.env("deleteMethod");
-    this.loginURL = Cypress.env("apiserver") + Cypress.env("loginURI");
-    this.body = {
-      username: Cypress.env("username"),
-      password: Cypress.env("password"),
-    };
+/* Swagger API: https://qa-practical.qa.swimlane.io/docs */
+class UserAPI {
+  /* Singleton Pattern for single instance creation. */
+  constructor() {
+    if (UserAPI._instance) return UserAPI._instance;
+    UserAPI._instance = this;
   }
 
-  userLoginRequest = () => {
-    return core.request(this.postMethod, this.loginURL, this.body);
-  };
+  /* Login user API implementation */
+  userLoginRequest() {
+    return core.request(POST, loginURL, body);
+  }
 }
 
+/* Create an instance and export. */
 const userAPI = new UserAPI();
 export default userAPI;
