@@ -1,10 +1,5 @@
 import core from "../Utils/CoreFunctions";
-
-const pageTitleLocator = "head > title";
-const userProfileLocator = ".ngx-dropdown-toggle";
-const logoutLocator = "li > .profile-title > .logout-button";
-const navigationMenuLocator = "ngx-nav-menu > div > a#home";
-const todoLocator = ".vertical-list > li";
+const locator = require("../PagesJSON/welcomePage.json");
 
 class WelcomePage {
   /* Singleton Pattern for single instance creation. */
@@ -15,20 +10,20 @@ class WelcomePage {
 
   /* Get page Title */
   getTitle(pageTitle) {
-    return core.findElement(pageTitleLocator).then(($element) => {
+    return core.findElement(locator.pageTitleLocator).then(($element) => {
       expect($element.text().trim()).to.eq(pageTitle);
     });
   }
 
   /* Click Logout Button */
   clickLogoutButton() {
-    core.findElement(userProfileLocator).click({ force: true });
-    core.findElement(logoutLocator).click();
+    core.findElement(locator.userProfileLocator).click({ force: true });
+    core.findElement(locator.logoutLocator).click();
   }
 
   /* Click Home Button */
   clickHomeButton() {
-    return core.get(navigationMenuLocator);
+    return core.get(locator.navigationMenuLocator);
   }
 }
 

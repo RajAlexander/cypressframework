@@ -24,34 +24,19 @@ Then("WelcomePage title must contain {string}.", (pageTitle) => {
   welcomePage.getTitle(pageTitle);
 });
 
-When(
-  "A user clicks a new record and provides below employee details in the form page.",
-  (dataTable) => {
-    let employees = [];
-    dataTable.rawTable.slice(1).forEach((employee, index) => {
-      const [FirstName, LastName, City, ZipCode] = employee;
-      employees.push({
-        FirstName,
-        LastName,
-        City,
-        ZipCode,
-      });
-    });
-    core.writeFile(employeeDataFixture,
-      JSON.stringify(employees)
-    );
-  }
-);
+When("A user clicks a new record and provides below employee details in the form page.", (dataTable) => {
+  let employees = [];
+  dataTable.rawTable.slice(1).forEach((employee, index) => {
+    const [FirstName, LastName, City, ZipCode] = employee;
+    employees.push({ FirstName, LastName, City, ZipCode, });
+  });
+  core.writeFile(employeeDataFixture, JSON.stringify(employees));
+});
 
-Then(
-  "An employee tracking ID is generated when the user clicks Save button on the form Page.",
-  () => {
-    core
-      .readFile(employeeDataFixture)
-      .then(function (employees) {
-        employees.forEach((employee) => {
-          employeePage.clickSaveButton(employee);
-        });
-      });
-  }
-);
+Then("An employee tracking ID is generated when the user clicks Save button on the form Page.", () => {
+  core.readFile(employeeDataFixture).then(function (employees) {
+    employees.forEach((employee) => {
+      employeePage.clickSaveButton(employee);
+    });
+  });
+});

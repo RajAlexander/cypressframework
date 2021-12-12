@@ -1,0 +1,14 @@
+{
+    "newEmployeeSubmissionButtonLocator": ".app-buttons",
+    "firstNameInputLocator":
+      ":nth-child(1) > :nth-child(1) > .form-group > :nth-child(2) > [ng-switch='field.fieldType'] > [ng-switch-when='text'] > [ng-if='!isReadOnly()'] > div > .form-input",
+    "lastNameInputLocator":
+      ":nth-child(1) > :nth-child(2) > .form-group > :nth-child(2) > [ng-switch='field.fieldType'] > [ng-switch-when='text'] > [ng-if='!isReadOnly()'] > div > .form-input",
+    "cityInputLocator":
+      ":nth-child(1) > .col-md-12 > .panel > .panel-body > :nth-child(2) > :nth-child(2) > .form-group > :nth-child(2) > [ng-switch='field.fieldType'] > [ng-switch-when='text'] > [ng-if='!isReadOnly()'] > div > .form-input",
+    "zipCodeInputLocator":"[ng-switch-when='numeric'] > div > .form-input",
+    "saveButtonLocator": ".nav > :nth-child(1) > .btn",
+    "timeSpentSaveButtonLocator": "body > div:last-child > div > div > div:last-child > button.btn",
+    "employeeIdLocator": "div.page-toolbar div  div h4 > span:last-child > span",
+    "pageTitleLocator":""
+}
