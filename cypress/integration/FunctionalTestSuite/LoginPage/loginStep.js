@@ -1,11 +1,4 @@
-import {
-  Given,
-  When,
-  Then,
-  And,
-  Before,
-  After,
-} from "cypress-cucumber-preprocessor/steps";
+import { Given, When, Then, And, Before, After } from "cypress-cucumber-preprocessor/steps";
 import core from "../../../framework/Utils/CoreFunctions";
 import loginPage from "../../../framework/Pages/LoginPage";
 import welcomePage from "../../../framework/Pages/WelcomePage";
@@ -34,10 +27,7 @@ When("A user provides below user credentials.", (dataTable) => {
   let users = [];
   dataTable.rawTable.slice(1).forEach((user, index) => {
     const [Username, Password] = user;
-    users.push({
-      Username,
-      Password,
-    });
+    users.push({ Username, Password });
   });
   core.writeFile(userDataFixture, JSON.stringify(users));
 });

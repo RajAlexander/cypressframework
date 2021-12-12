@@ -1,10 +1,5 @@
-import core from "../Utils/CoreFunctions";
-
-const usernameLocator = "#input-1";
-const passwordLocator = "#input-2";
-const loginButtonLocator = "button[type='submit']";
-const loginErrorTextLocator = ".login-error";
-const welcomePageTextLocator = ".box h1";
+import core from "../Utils/CoreFunctions.js";
+const locator = require("../PagesJSON/loginPage.json");
 
 class LoginPage {
   /* Singleton Pattern for single instance creation. */
@@ -15,25 +10,25 @@ class LoginPage {
 
   /* Input userId credential. */
   usernameInput(username) {
-    core.type(usernameLocator, username);
+    core.type(locator.usernameInputLocator, username);
     return this;
   }
 
   /* Input password credential. */
   passwordInput(password) {
-    core.typeSensitive(passwordLocator, password);
+    core.typeSensitive(locator.passwordInputLocator, password);
     return this;
   }
 
   /* Click login button. */
   login() {
-    core.findElement(loginButtonLocator).click();
+    core.findElement(locator.loginButtonLocator).click();
     return this;
   }
 
   /* Login page error validations. */
   validateFail(expectedText) {
-    core.get(loginErrorTextLocator).then(($element) => {
+    core.get(locator.loginErrorTextLocator).then(($element) => {
       const actualText = $element.text();
       expect(actualText).to.include(expectedText);
     });
@@ -41,7 +36,7 @@ class LoginPage {
 
   /* Login page success validations. */
   validatePass(expectedText) {
-    core.get(welcomePageTextLocator).then(($element) => {
+    core.get(locator.welcomePageTextLocator).then(($element) => {
       const actualText = $element.text();
       expect(actualText).to.include(expectedText);
     });

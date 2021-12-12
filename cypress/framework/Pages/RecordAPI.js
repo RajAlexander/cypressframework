@@ -12,22 +12,19 @@ const createRecordURL = Cypress.env("apiserver") + Cypress.env("createRecordURI"
 const pathToLoginApiResponseFolder = Cypress.env("pathToLoginApiResponseFolder");
 const pathToCreateRecordApiResponseFolder = Cypress.env("pathToCreateRecordApiResponseFolder");
 const pathToGetRecordApiResponseFolder = Cypress.env("pathToGetRecordApiResponseFolder");
-const createRecordApiRequestBody = {
-  applicationId: applicationId,
-  values: {
-    adwok: "Hyderabad",
-    alzxa: "nareshraj423@yahoo.com",
-    aif8s: "",
-    a75lt: "Naresh",
-    a8rki: "G",
-    avf8l: "",
-    au0sv:
-      "Flat No. 403, 4th Floor, SV Emerald Apartment.\nInnova Hospital Lane",
-    abjcf: "",
-    ah1nd: "",
-    abavp: 500017,
-  },
-};
+const values = {
+  adwok: "Hyderabad",
+  alzxa: "nareshraj423@yahoo.com",
+  aif8s: "",
+  a75lt: "Naresh",
+  a8rki: "G",
+  avf8l: "",
+  au0sv:
+    "Flat No. 403, 4th Floor, SV Emerald Apartment.\nInnova Hospital Lane",
+  abjcf: "",
+  ah1nd: "",
+  abavp: 500017,
+}
 
 /* Swagger API: https://qa-practical.qa.swimlane.io/docs */
 class RecordAPI {
@@ -38,15 +35,15 @@ class RecordAPI {
   }
 
   /* Create Record API implementation */
-  createRecordRequest = (response) => {
-    let userLoginResponse = response;
+  createRecordRequest = (userLoginResponse) => {
+    /* Save the created record. */
     core.writeFile(pathToLoginApiResponseFolder, JSON.stringify(userLoginResponse));
     /* POST Request PayLoad */
     const options = {
       method: POST,
       url: createRecordURL,
       headers: { Authorization: BEARER + userLoginResponse.body.token },
-      body: createRecordApiRequestBody,
+      body: { applicationId: applicationId, values: values },
       failOnStatusCode: false,
     };
 
@@ -59,8 +56,8 @@ class RecordAPI {
   };
 
   /* Get Record API implementation */
-  getRecordRequest = (response) => {
-    let userLoginResponse = response;
+  getRecordRequest = (userLoginResponse) => {
+    /* Read existing created record. */
     core.readFile(pathToCreateRecordApiResponseFolder).then((createRecordApiResponse) => {
       /* GET Request PayLoad */
       const options = {
@@ -74,14 +71,13 @@ class RecordAPI {
       core.request(options).then((getRecordResponse) => {
         if (getRecordResponse.status == SUCCESS_STATUS) core.log("Record fetched successfully.");
         else core.log("Bad Request");
-        core.writeFile(pathToCreateRecordApiResponseFolder, JSON.stringify(getRecordResponse));
+        core.writeFile(pathToGetRecordApiResponseFolder, JSON.stringify(getRecordResponse));
       });
     });
   };
 
   /* Delete Record API implementation */
-  deleteRecordRequest = (response) => {
-    let userLoginResponse = response;
+  deleteRecordRequest = (userLoginResponse) => {
     /* Read existing created record. */
     core.readFile(pathToCreateRecordApiResponseFolder).then((createRecordApiResponse) => {
       /* DELETE Request PayLoad */

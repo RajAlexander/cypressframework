@@ -1,11 +1,4 @@
-import {
-  Given,
-  When,
-  Then,
-  And,
-  Before,
-  After,
-} from "cypress-cucumber-preprocessor/steps";
+import { Given, When, Then, And, Before, After } from "cypress-cucumber-preprocessor/steps";
 import core from "../../../framework/Utils/CoreFunctions";
 import loginPage from "../../../framework/Pages/LoginPage";
 import welcomePage from "../../../framework/Pages/WelcomePage";
@@ -52,9 +45,7 @@ And("/login request is intercepted.", () => {
 Then("Save token and /login response should give {int} status code.", (_statusCode) => {
   core.waitForObject("@login").then((resolve) => {
     expect(resolve.response.statusCode).to.eq(_statusCode);
-    core.log(
-      "User login is intercepted and response saved in payload folder"
-    );
+    core.log("User login is intercepted and response saved in payload folder");
   });
 });
 

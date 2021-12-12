@@ -1,0 +1,7 @@
+{
+    "usernameInputLocator": "#input-1",
+    "passwordInputLocator": "#input-2",
+    "loginButtonLocator": "button[type='submit']",
+    "loginErrorTextLocator": ".login-error",
+    "welcomePageTextLocator": ".box h1"
+}
